@@ -98,7 +98,8 @@ GROUP BY
 
 [![Grouped](https://github.com/caspercrause/TimeCamp-Tutorial/blob/master/grouped_by_project.png)](https://github.com/caspercrause/TimeCamp-Tutorial/blob/master/grouped_by_project.png)
 
-In the script there is a final code block:
+In the [script](https://github.com/caspercrause/TimeCamp-Tutorial/blob/master/timecamp.py) there is a final code block:
+
 ```
 load_info = pipeline.run(
     data,
