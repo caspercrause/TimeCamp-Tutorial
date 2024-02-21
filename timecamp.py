@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 import os
 from dotenv import load_dotenv
 import dlt
-# import pyarrow as pa
+
 
 
 # Load environmnet file
@@ -51,7 +51,7 @@ LowerLimit = (Now - relativedelta(months=2)).strftime('%Y-%m-01')
 Yesterday  = (Now - relativedelta(days=1)).strftime('%Y-%m-%d')
 UpperLimit = Yesterday
 
-# Iteratively retrieve entries from the timecamp API and appeend them into our dictionary:
+# Iteratively retrieve entries from the timecamp API and append them into our dictionary:
 """
 
 Example of how this code iterates: 

@@ -1,3 +1,4 @@
 *.env
 env
 *.duckdb
+.DS_Store
