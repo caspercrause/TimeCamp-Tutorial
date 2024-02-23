@@ -12,7 +12,7 @@ Something that the orginal package lacked was the ability to query the project n
 pip install -e git+https://github.com/caspercrause/pytimecamp/#egg=pytimecamp
 ```
 
-With that installed it's time to look at an exampke pipeline that I am going to be building with the help of the [dlt](https://dlthub.com/docs/getting-started) package.
+With that installed it's time to look at an example pipeline that I am going to be building with the help of the [dlt](https://dlthub.com/docs/getting-started) package.
 
 `dlt` is an open-source library that you can add to your Python scripts to load data from various and often messy data sources into well-structured, live datasets. 
 
@@ -108,4 +108,4 @@ load_info = pipeline.run(
 )
 ```
 
-The amazing thing about `dlt` is it's ability to upsert rows. The script above finds new entries and adds them to the database. While updating existing rows, shoud it detect a change. Thanks to the `write_disposition="merge"` This drastically decrases the amount data-engineers spend on working with data and enables you to spend more time on things that matter... Data Quality!
+The amazing thing about `dlt` is its ability to upsert rows. The script above finds new entries and adds them to the database. While updating existing rows, shoud it detect a change. Thanks to the `write_disposition="merge"` This drastically decrases the amount data-engineers spend on working with data and enables you to spend more time on things that matter... Data Quality!
