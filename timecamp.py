@@ -7,17 +7,13 @@ import os
 from dotenv import load_dotenv
 import dlt
 
-
-
 # Load environmnet file
 load_dotenv()
 
 # Create a TimeCamp object
 tc = Timecamp( os.getenv("TIMECAMP_API_KEY") )
 
-# Gather all user ids:
-ids = [user for user in tc.users]
-
+ids = [id for id in tc.users]
 # Helper function
 
 def create_dict(Input_list):
@@ -29,6 +25,7 @@ def create_dict(Input_list):
 
 # Map the columns of the dataframe to attributes of the timecamp object to be queried:
 Field_Names_Mapped_to_TimeCamp = {
+    'Entry_id' : 'id',
     'Date': 'date', 
     'User_Name': 'user_name',
     'Project_Name': 'project_name', 
@@ -47,9 +44,9 @@ Now = dt.now()
 print(f"Executing script at {Now.strftime('%A %b %d, %Y at %H:%M:%S')}")
 
 # Create upper and lower limits in the format "YYYY-MM-DD" to query timecamp:
-LowerLimit = (Now - relativedelta(months=2)).strftime('%Y-%m-01')
-Yesterday  = (Now - relativedelta(days=1)).strftime('%Y-%m-%d')
-UpperLimit = Yesterday
+LowerLimit = (Now - relativedelta(days=7)).strftime('%F')
+
+UpperLimit = (Now - relativedelta(days=0)).strftime('%F')
 
 # Iteratively retrieve entries from the timecamp API and append them into our dictionary:
 """
@@ -64,7 +61,7 @@ dictionary['Project_Name'].apppend(entry.project.name)
 dictionary['Duration'].apppend(entry.project.duration)
 
 """ 
-for entry in tc.entries(from_date=LowerLimit, to_date=UpperLimit, user_ids=ids):
+for entry in tc.entries(from_date=LowerLimit, to_date=UpperLimit, user_ids=id):
     for ColumnName, timecamp_attr_name in Field_Names_Mapped_to_TimeCamp.items():
         try:
             dictionary.get(ColumnName).append(getattr(entry, timecamp_attr_name)) 
@@ -73,6 +70,8 @@ for entry in tc.entries(from_date=LowerLimit, to_date=UpperLimit, user_ids=ids):
 
     
 Timecamp_DF = pd.DataFrame(dictionary)
+
+print(f'    ** Retrieved {len(Timecamp_DF)} rows.')
 
 # Everything queried from the TimeCamp API is of type string so we have to convert data types
 
@@ -86,7 +85,10 @@ for col in Time_Cols:
 
 # Convert to Date Time objects:
 for col in Date_Cols:
-    Timecamp_DF[col] = pd.to_datetime(Timecamp_DF[col])
+    if col == "Date":
+        Timecamp_DF[col] = pd.to_datetime(Timecamp_DF[col]).dt.date
+    else:
+        Timecamp_DF[col] = pd.to_datetime(Timecamp_DF[col])
 
 # Convert to Float:
 Timecamp_DF[Numeric_Cols] = Timecamp_DF[Numeric_Cols].astype('Float64')
@@ -98,12 +100,13 @@ Timecamp_DF.sort_values(['Date', 'User_Name', 'Timer_Start'], ascending=[True, T
 data = Timecamp_DF.to_dict(orient="records")
 
 pipeline = dlt.pipeline(
-    pipeline_name="test", destination="duckdb", dataset_name="timecamp_data"
+    pipeline_name="timecamp", destination="bigquery", dataset_name="timecamp_data_expirement", progress='enlighten'
 )
 
 load_info = pipeline.run(
     data,
-    write_disposition="merge",
+    write_disposition="merge", 
+    primary_key='Entry_id',
     table_name="daily_table"
 )
 

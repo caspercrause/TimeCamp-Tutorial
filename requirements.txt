@@ -1,7 +1,6 @@
-dlt==0.4.4
-duckdb==0.9.2
 pandas==2.2.0
 numpy==1.26.4
 python-dotenv==1.0.1
 streamlit==1.31.1
 -e git+https://github.com/caspercrause/pytimecamp/@8a1ea31318519ced5e8a5e6916daa8517f14d29e#egg=pytimecamp
+dlt[bigquery]>=0.3.25
