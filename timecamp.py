@@ -61,7 +61,7 @@ dictionary['Project_Name'].apppend(entry.project.name)
 dictionary['Duration'].apppend(entry.project.duration)
 
 """ 
-for entry in tc.entries(from_date=LowerLimit, to_date=UpperLimit, user_ids=id):
+for entry in tc.entries(from_date=LowerLimit, to_date=UpperLimit, user_ids=ids):
     for ColumnName, timecamp_attr_name in Field_Names_Mapped_to_TimeCamp.items():
         try:
             dictionary.get(ColumnName).append(getattr(entry, timecamp_attr_name)) 
