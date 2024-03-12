@@ -60,10 +60,10 @@ That will yield an output similar to the following:
 >>> The duckdb destination used duckdb:/Users/caspercrause/Documents/Data-Engineering/test.duckdb location to store data
 >>> Load package 1708160969.5296462 is LOADED and contains no failed jobs
 ```
-Since I've called this particular pipeline `test` I can run the following to explore the data and allow a sneak peek and basic discovery you can take advantage of built-in integration with Strealmit:
+Since I've called this particular pipeline `timecamp` I can run the following to explore the data and allow a sneak peek and basic discovery you can take advantage of built-in integration with Strealmit:
 
 ```
-dlt pipeline test show
+dlt pipeline timecamp show
 ```
 That will open up an interactive window that looks like this:
 
@@ -103,7 +103,8 @@ In the [script](https://github.com/caspercrause/TimeCamp-Tutorial/blob/master/ti
 ```
 load_info = pipeline.run(
     data,
-    write_disposition="merge",
+    write_disposition="merge", 
+    primary_key='Entry_id',
     table_name="daily_table"
 )
 ```
